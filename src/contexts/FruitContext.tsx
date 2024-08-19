@@ -6,19 +6,25 @@ type Action =
   | { type: "SET_FRUITS"; payload: Fruit[] }
   | { type: "ADD_TO_JAR"; payload: Fruit }
   | { type: "ADD_GROUP_TO_JAR"; payload: Fruit[] }
-  | { type: "SET_GROUP_BY_FIELD"; payload: GroupByField };
+  | { type: "SET_GROUP_BY_FIELD"; payload: GroupByField }
+  | { type: "SET_LOADING"; payload: boolean }
+  | { type: "SET_ERROR"; payload: string };
 
 // Define the shape of the state
 interface State {
   fruits: Fruit[];
   jar: Fruit[];
   groupByField: GroupByField;
+  loading: boolean;
+  error: string | null;
 }
 
 // Initial state
 const initialState: State = {
   fruits: [],
   jar: [],
+  loading: false,
+  error: null,
   groupByField: "None",
 };
 
@@ -33,6 +39,10 @@ function reducer(state: State, action: Action): State {
       return { ...state, jar: [...state.jar, ...action.payload] };
     case "SET_GROUP_BY_FIELD":
       return { ...state, groupByField: action.payload };
+    case "SET_LOADING":
+      return { ...state, loading: action.payload };
+    case "SET_ERROR":
+      return { ...state, error: action.payload };
     default:
       throw new Error("Unknown action type");
   }
