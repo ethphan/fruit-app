@@ -1,11 +1,10 @@
 import React from "react";
-import { Fruit } from "../App"; // Import Fruit type from App
+import { useFruitContext } from "../contexts/FruitContext";
 
-interface JarProps {
-  jar: Fruit[];
-}
+const Jar = () => {
+  const { state } = useFruitContext();
+  const { jar } = state;
 
-const Jar: React.FC<JarProps> = ({ jar }) => {
   // Calculate total calories from the nested nutritions object
   const totalCalories = jar.reduce(
     (acc, fruit) => acc + (Number(fruit.nutritions.calories) || 0),

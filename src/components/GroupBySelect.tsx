@@ -1,10 +1,6 @@
 import React from "react";
 import { GroupByField } from "../App";
-
-interface GroupBySelectProps {
-  groupByField: GroupByField;
-  setGroupByField: (field: GroupByField) => void;
-}
+import { useFruitContext } from "../contexts/FruitContext";
 
 interface GroupByOption {
   value: GroupByField;
@@ -18,17 +14,21 @@ const groupByOptions: GroupByOption[] = [
   { value: "genus", display: "Genus" },
 ];
 
-const GroupBySelect: React.FC<GroupBySelectProps> = ({
-  groupByField,
-  setGroupByField,
-}) => {
+const GroupBySelect = () => {
+  const { state, dispatch } = useFruitContext();
+  const { groupByField } = state;
   return (
     <div className="group-by-select">
       <label htmlFor="groupBy">Group by:</label>
       <select
         id="groupBy"
         value={groupByField}
-        onChange={(e) => setGroupByField(e.target.value as GroupByField)}
+        onChange={(e) =>
+          dispatch({
+            type: "SET_GROUP_BY_FIELD",
+            payload: e.target.value as GroupByField,
+          })
+        }
       >
         {groupByOptions.map(({ value, display }) => (
           <option key={value} value={value}>

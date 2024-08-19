@@ -1,50 +1,38 @@
 import React, { useState } from "react";
 import { Fruit, GroupByField } from "../App";
+import { useFruitContext } from "../contexts/FruitContext";
 
-interface FruitListProps {
-  fruits: Fruit[];
-  groupByField: GroupByField;
-  addToJar: (fruit: Fruit) => void;
-  addGroupToJar: (group: Fruit[]) => void;
-}
+const FruitList = () => {
+  const { state, dispatch } = useFruitContext();
+  const { fruits, groupByField } = state;
 
-// Group fruits by the specified field (family, order, genus)
-function groupBy(fruits: Fruit[], key: GroupByField): Record<string, Fruit[]> {
-  if (key === "None") return { None: fruits }; // If grouping by 'None', return a flat list
-  console.log("key", key);
-  return fruits.reduce((result, fruit) => {
-    const groupValue = fruit[key]; // Safely access group by field (family, order, genus)
-    console.log("groupValue", groupValue);
-    console.log("fruit", fruit);
-
-    // Ensure groupValue is valid and defined
-    if (groupValue && typeof groupValue === "string") {
-      if (!result[groupValue]) {
-        result[groupValue] = [];
-      }
-      result[groupValue].push(fruit);
-    }
-    console.log("result", result);
-
-    return result;
-  }, {} as Record<string, Fruit[]>);
-}
-
-const FruitList: React.FC<FruitListProps> = ({
-  fruits,
-  groupByField,
-  addToJar,
-  addGroupToJar,
-}) => {
-  const groupedFruits = groupBy(fruits, groupByField);
   const [collapsedGroups, setCollapsedGroups] = useState<
     Record<string, boolean>
   >({}); // Track collapsed groups
 
-  console.log("groupedFruits", groupedFruits);
-  console.log("collapsedGroups", collapsedGroups);
+  const groupedFruits = groupBy(fruits, groupByField);
 
-  // Toggle collapse/expand for a group
+  // // Group fruits by the specified field (family, order, genus)
+  function groupBy(
+    fruits: Fruit[],
+    key: GroupByField
+  ): Record<string, Fruit[]> {
+    if (key === "None") return { None: fruits }; // If grouping by 'None', return a flat list
+
+    return fruits.reduce((result, fruit) => {
+      const groupValue = fruit[key]; // Safely access group by field (family, order, genus)
+      // Ensure groupValue is valid and defined
+      if (groupValue && typeof groupValue === "string") {
+        if (!result[groupValue]) {
+          result[groupValue] = [];
+        }
+        result[groupValue].push(fruit);
+      }
+
+      return result;
+    }, {} as Record<string, Fruit[]>);
+  }
+
   const toggleGroup = (groupName: string) => {
     setCollapsedGroups({
       ...collapsedGroups,
@@ -63,7 +51,11 @@ const FruitList: React.FC<FruitListProps> = ({
               onClick={() => toggleGroup(groupName)}
             >
               <h3>{groupName}</h3>
-              <button onClick={() => addGroupToJar(fruits)}>
+              <button
+                onClick={() =>
+                  dispatch({ type: "ADD_GROUP_TO_JAR", payload: fruits })
+                }
+              >
                 Add Group to Jar
               </button>
               <button>
@@ -78,7 +70,13 @@ const FruitList: React.FC<FruitListProps> = ({
                   <span>
                     {fruit.name} ({fruit.nutritions.calories} calories)
                   </span>
-                  <button onClick={() => addToJar(fruit)}>Add</button>
+                  <button
+                    onClick={() =>
+                      dispatch({ type: "ADD_TO_JAR", payload: fruit })
+                    }
+                  >
+                    Add
+                  </button>
                 </li>
               ))}
             </ul>
