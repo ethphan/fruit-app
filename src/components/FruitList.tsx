@@ -10,9 +10,7 @@ const FruitList = () => {
     Record<string, boolean>
   >({}); // Track collapsed groups
 
-  const groupedFruits = groupBy(fruits, groupByField);
-
-  // // Group fruits by the specified field (family, order, genus)
+  // Group fruits by the specified field (family, order, genus)
   function groupBy(
     fruits: Fruit[],
     key: GroupByField
@@ -33,6 +31,8 @@ const FruitList = () => {
     }, {} as Record<string, Fruit[]>);
   }
 
+  const groupedFruits = groupBy(fruits, groupByField);
+
   const toggleGroup = (groupName: string) => {
     setCollapsedGroups({
       ...collapsedGroups,
@@ -46,10 +46,7 @@ const FruitList = () => {
       {Object.entries(groupedFruits).map(([groupName, fruits]) => (
         <div key={groupName} className="fruit-group">
           {groupByField !== "None" && (
-            <div
-              className="group-header"
-              onClick={() => toggleGroup(groupName)}
-            >
+            <div className="group-header">
               <h3>{groupName}</h3>
               <button
                 onClick={() =>
@@ -58,7 +55,7 @@ const FruitList = () => {
               >
                 Add Group to Jar
               </button>
-              <button>
+              <button onClick={() => toggleGroup(groupName)}>
                 {collapsedGroups[groupName] ? "Expand" : "Collapse"}
               </button>
             </div>
