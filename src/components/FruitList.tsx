@@ -8,7 +8,7 @@ const FruitList = () => {
 
   const [collapsedGroups, setCollapsedGroups] = useState<
     Record<string, boolean>
-  >({}); // Track collapsed groups
+  >({});
 
   // Group fruits by the specified field (family, order, genus)
   function groupBy(

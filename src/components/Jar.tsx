@@ -5,7 +5,6 @@ const Jar = () => {
   const { state } = useFruitContext();
   const { jar } = state;
 
-  // Calculate total calories from the nested nutritions object
   const totalCalories = jar.reduce(
     (acc, fruit) => acc + (Number(fruit.nutritions.calories) || 0),
     0

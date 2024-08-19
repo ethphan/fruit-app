@@ -1,7 +1,6 @@
 import React, { createContext, useReducer, useContext, ReactNode } from "react";
 import { Fruit, GroupByField } from "../App";
 
-// Define actions
 type Action =
   | { type: "SET_FRUITS"; payload: Fruit[] }
   | { type: "ADD_TO_JAR"; payload: Fruit }
@@ -10,7 +9,6 @@ type Action =
   | { type: "SET_LOADING"; payload: boolean }
   | { type: "SET_ERROR"; payload: string };
 
-// Define the shape of the state
 interface State {
   fruits: Fruit[];
   jar: Fruit[];
