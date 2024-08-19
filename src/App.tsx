@@ -26,20 +26,21 @@ function App() {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/fruit/all");
-        if (!response.ok) throw new Error("Failed to fetch");
-        const data = await response.json();
-        setFruits(data);
-      } catch (err) {
-        setError("Failed to load fruits");
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchData();
   }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch("/api/fruit/all");
+      if (!response.ok) throw new Error("Failed to fetch");
+      const data = await response.json();
+      setFruits(data);
+    } catch (err) {
+      setError("Failed to load fruits");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const addToJar = (fruit: Fruit) => {
     setJar([...jar, fruit]);

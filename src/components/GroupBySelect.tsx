@@ -6,7 +6,17 @@ interface GroupBySelectProps {
   setGroupByField: (field: GroupByField) => void;
 }
 
-const groupByOptions: GroupByField[] = ["None", "family", "order", "genus"];
+interface GroupByOption {
+  value: GroupByField;
+  display: string;
+}
+
+const groupByOptions: GroupByOption[] = [
+  { value: "None", display: "None" },
+  { value: "family", display: "Family" },
+  { value: "order", display: "Order" },
+  { value: "genus", display: "Genus" },
+];
 
 const GroupBySelect: React.FC<GroupBySelectProps> = ({
   groupByField,
@@ -20,10 +30,9 @@ const GroupBySelect: React.FC<GroupBySelectProps> = ({
         value={groupByField}
         onChange={(e) => setGroupByField(e.target.value as GroupByField)}
       >
-        {groupByOptions.map((option) => (
-          <option key={option} value={option}>
-            {option.charAt(0).toUpperCase() + option.slice(1)}{" "}
-            {/* Capitalize options */}
+        {groupByOptions.map(({ value, display }) => (
+          <option key={value} value={value}>
+            {display}
           </option>
         ))}
       </select>
